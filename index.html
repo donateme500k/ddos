@@ -1,283 +1,337 @@
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KURAMA • DDoS Test Lab</title>
+    <meta name="description" content="Thông tin Dân cư Việt Nam - Bản giả lập">
+    <title>Thông Tin Dân Cư Quốc Gia</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap');
         
         :root {
-            --neon-green: #22ff88;
+            --tw-color-primary: #d32f2f;
+        }
+        
+        * {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
         
         body {
-            font-family: 'VT323', monospace;
+            background: linear-gradient(180deg, #f8f9fa 0%, #e5e7eb 100%);
         }
         
-        .neon-text {
-            text-shadow: 
-                0 0 10px var(--neon-green),
-                0 0 20px var(--neon-green),
-                0 0 40px var(--neon-green);
+        .phone-frame {
+            max-width: 420px;
+            margin: 20px auto;
+            background: #111827;
+            border-radius: 52px;
+            padding: 12px;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            border: 8px solid #111827;
+            position: relative;
         }
         
-        .scanline {
+        .phone-frame::before {
+            content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                transparent 50%,
-                rgba(34, 255, 136, 0.08) 50%
-            );
-            background-size: 100% 6px;
-            pointer-events: none;
-            animation: scan 4s linear infinite;
-            z-index: 1;
-            opacity: 0.15;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 28px;
+            background: #111827;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            z-index: 10;
         }
         
-        @keyframes scan {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(400%); }
+        .card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        .counter-glow {
-            animation: counterPulse 1.5s ease-in-out infinite;
+        .info-row {
+            transition: all 0.2s ease;
         }
         
-        .glass {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(12px);
+        .info-row:hover {
+            background-color: #f8fafc;
+        }
+        
+        .status-pulse {
+            animation: pulse 2s infinite;
         }
     </style>
 </head>
-<body class="bg-[#0a0a0a] text-[#22ff88] min-h-screen overflow-x-hidden">
-    <div class="scanline"></div>
-    
-    <!-- HEADER -->
-    <div class="border-b border-[#22ff88]/30 bg-black/80 sticky top-0 z-50">
-        <div class="max-w-screen-xl mx-auto px-4 py-3 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-[#22ff88] text-black flex items-center justify-center text-2xl rotate-45">⚡</div>
-                <div>
-                    <h1 class="text-3xl font-bold tracking-[4px] neon-text">KURAMA</h1>
-                    <p class="text-xs tracking-widest text-[#22ff88]/70 -mt-1">DDOS TEST LAB • VERCEL EDITION</p>
-                </div>
-            </div>
+<body class="min-h-screen pb-12">
+    <!-- Phone frame wrapper -->
+    <div class="phone-frame mx-auto">
+        
+        <!-- Main content inside phone -->
+        <div class="bg-white rounded-3xl overflow-hidden min-h-[680px] shadow-inner">
             
-            <div class="flex items-center gap-6 text-sm">
-                <div class="flex items-center gap-2">
-                    <div id="status-dot" class="w-3 h-3 bg-[#22ff88] rounded-full animate-pulse"></div>
-                    <span id="status-text" class="uppercase tracking-widest">ONLINE • NHẬN REQUEST THẬT</span>
+            <!-- Header - Official style -->
+            <div class="bg-[#d32f2f] text-white px-5 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <!-- Vietnam flag -->
+                    <div class="flex items-center justify-center w-8 h-8 bg-white rounded-full text-[#d32f2f] text-2xl shadow-inner">🇻🇳</div>
+                    <div>
+                        <h1 class="text-lg font-semibold tracking-tight">DÂN CƯ QUỐC GIA</h1>
+                        <p class="text-[10px] opacity-90 -mt-0.5">Bộ Công An • Cục Cảnh sát QLHC</p>
+                    </div>
                 </div>
                 
-                <div class="px-4 py-1 bg-[#22ff88]/10 border border-[#22ff88]/40 rounded-full text-xs flex items-center gap-1.5">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22ff88] opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#22ff88]"></span>
-                    </span>
-                    LIVE
-                </div>
-            </div>
-            
-            <a href="https://x.com/kurama8386" target="_blank" 
-               class="text-[#22ff88]/70 hover:text-[#22ff88] transition-colors flex items-center gap-1 text-xs">
-                <span>ＫＵＲＡＭＡ</span>
-                <span class="text-base">𝕏</span>
-            </a>
-        </div>
-    </div>
-
-    <div class="max-w-screen-xl mx-auto px-4 py-8">
-        <!-- MAIN COUNTER -->
-        <div class="glass border border-[#22ff88]/30 rounded-3xl p-8 md:p-12 text-center mb-8 relative overflow-hidden">
-            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,#22ff8810_0%,transparent_70%)]"></div>
-            
-            <p class="text-[#22ff88]/50 text-sm tracking-[3px] mb-2">TỔNG SỐ REQUEST ĐÃ NHẬN (THẬT 100% - BROWSER)</p>
-            
-            <div id="counter" 
-                 class="counter-glow text-[8rem] md:text-[10rem] font-bold leading-none tracking-[-8px] text-transparent bg-clip-text bg-gradient-to-b from-[#22ff88] to-[#00cc66] neon-text">
-                000000
-            </div>
-            
-            <div class="flex justify-center items-center gap-8 text-xs mt-4">
                 <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 bg-[#22ff88]"></div>
-                    <span id="requests-per-sec" class="font-bold">0 req/s</span>
+                    <div class="bg-white/20 text-xs px-3 py-1 rounded-3xl backdrop-blur-md flex items-center gap-1">
+                        <div class="w-2 h-2 bg-green-400 rounded-full status-pulse"></div>
+                        TRỰC TUYẾN
+                    </div>
+                    <div class="w-9 h-9 bg-white rounded-2xl flex items-center justify-center text-[#d32f2f] font-bold text-xl shadow-inner">👤</div>
                 </div>
-                <div class="h-4 w-px bg-[#22ff88]/30"></div>
-                <div id="total-label" class="uppercase">ĐANG CHẠY TEST DDOS THỰC TẾ</div>
             </div>
             
-            <!-- Attack intensity -->
-            <div class="mt-8 h-2 bg-black/60 rounded-full overflow-hidden border border-[#22ff88]/20">
-                <div id="attack-bar" class="h-full w-0 bg-gradient-to-r from-[#22ff88] to-cyan-400 transition-all duration-300"></div>
-            </div>
-            <p class="text-[10px] text-[#22ff88]/40 mt-1 text-right">ATTACK INTENSITY • LIVE</p>
-
-            <div class="mt-6 text-xs text-[#22ff88]/60 bg-black/40 p-3 rounded-2xl">
-                📌 Deploy lên Vercel chỉ 1 file • Mỗi lần ai đó mở trang = +1 request thật
-            </div>
-        </div>
-
-        <!-- THỐNG KÊ -->
-        <div class="glass border border-[#22ff88]/30 rounded-3xl p-6 md:p-8 mb-8">
-            <div class="text-xs tracking-widest mb-4">THỐNG KÊ REALTIME</div>
-            <div class="grid grid-cols-3 gap-6 text-center">
-                <div>
-                    <div id="today-count" class="text-5xl font-bold text-[#22ff88]">0</div>
-                    <div class="text-xs text-[#22ff88]/50">HÔM NAY</div>
-                </div>
-                <div>
-                    <div id="peak-count" class="text-5xl font-bold text-[#22ff88]">0</div>
-                    <div class="text-xs text-[#22ff88]/50">PEAK / 5 PHÚT</div>
-                </div>
-                <div>
-                    <div id="unique-ip" class="text-5xl font-bold text-[#22ff88]">1</div>
-                    <div class="text-xs text-[#22ff88]/50">IP HIỆN TẠI</div>
+            <!-- Title bar -->
+            <div class="px-5 pt-5 pb-3 bg-white border-b">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-900">Thông tin cư trú</h2>
+                        <p class="text-sm text-gray-500">Mã định danh cá nhân • Đã xác thực</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="inline-flex items-center bg-green-100 text-green-700 text-xs font-medium px-4 h-8 rounded-3xl gap-1">
+                            <span class="text-base">✓</span>
+                            ĐÃ XÁC THỰC
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- EMAIL REPORT -->
-        <button onclick="generateEmailReport()" 
-                class="w-full glass border border-[#22ff88] hover:bg-[#22ff88] hover:text-black transition-all py-8 rounded-3xl text-3xl font-bold tracking-widest flex items-center justify-center gap-4">
-            <span class="text-4xl">📧</span>
-            GỬI EMAIL BÁO CÁO NGAY
-            <span class="text-sm bg-black/30 px-5 py-2 rounded-3xl">tính toán realtime</span>
-        </button>
-
-        <div class="mt-8 text-center text-[10px] text-[#22ff88]/40 leading-tight">
-            File HTML duy nhất • Deploy Vercel chỉ cần index.html<br>
-            Counter tăng thực tế mỗi lần trang được mở (browser)<br>
-            Muốn count raw HTTP (curl, hping3, ab...) thì cần backend Flask
-        </div>
-    </div>
-
-    <!-- MOBILE FOOTER -->
-    <div class="fixed bottom-0 left-0 right-0 bg-black border-t border-[#22ff88]/30 md:hidden z-50">
-        <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center text-xs justify-between">
-            <div onclick="generateEmailReport()" class="flex flex-col items-center">
-                <span class="text-2xl mb-1">📤</span>
-                EMAIL
+            
+            <!-- Profile photo -->
+            <div class="px-5 -mt-6 flex justify-center">
+                <div class="relative">
+                    <div class="w-28 h-28 bg-white rounded-3xl shadow-xl p-1">
+                        <img src="https://i.pravatar.cc/300?u=leminhtuan1995" 
+                             alt="Ảnh chân dung Nguyễn Văn A" 
+                             class="w-full h-full object-cover rounded-3xl">
+                    </div>
+                    <!-- Verified badge -->
+                    <div class="absolute -bottom-1 -right-1 bg-white rounded-2xl shadow-md px-2 py-1 flex items-center text-green-600 text-xs font-bold">
+                        <span class="text-lg leading-none">✓</span>
+                    </div>
+                </div>
             </div>
-            <div onclick="window.location.reload()" class="flex flex-col items-center">
-                <span class="text-2xl mb-1">🔄</span>
-                RESET
-            </div>
-            <div class="flex flex-col items-center text-[#22ff88]">
-                <span class="text-2xl mb-1">⚡</span>
-                LIVE
-            </div>
-            <div class="text-[#22ff88]/70 text-center text-[10px] leading-none">
-                WEB TEST<br>DDOS THẬT<br>VERCEL
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // ================== CONFIG COUNTER (bạn có thể thay đổi) ==================
-        const NAMESPACE = "kurama8386-ddos-lab"
-        const KEY = "requests-v1"
-        // ======================================================================
-
-        let totalRequests = 0
-        let lastCount = 0
-        let lastTime = Date.now()
-        let requestsPerSecond = 0
-        let peak5min = 0
-        let yourIP = "Đang lấy..."
-
-        // Lấy IP hiện tại của người mở trang
-        async function getCurrentIP() {
-            try {
-                const res = await fetch("https://api.ipify.org?format=json")
-                const data = await res.json()
-                yourIP = data.ip
-                document.getElementById("unique-ip").textContent = yourIP
-            } catch(e) {}
-        }
-
-        // Tăng counter (mỗi lần mở trang = +1 request thật)
-        async function hitCounter() {
-            try {
-                await fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}`)
-            } catch(e) {}
-        }
-
-        // Lấy giá trị counter hiện tại
-        async function getCounter() {
-            try {
-                const res = await fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${KEY}`)
-                const data = await res.json()
-                
-                totalRequests = data.value || 0
-                document.getElementById("counter").textContent = String(totalRequests).padStart(6, '0')
-
-                // Tính RPS
-                const now = Date.now()
-                const timeDiff = (now - lastTime) / 1000
-                if (timeDiff > 0.5) {
-                    const delta = totalRequests - lastCount
-                    requestsPerSecond = Math.max(0, Math.round(delta / timeDiff))
-                    lastCount = totalRequests
-                    lastTime = now
+            
+            <!-- Personal info card -->
+            <div class="mx-5 mt-6 bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden card">
+                <div class="px-6 py-5 space-y-5">
                     
-                    document.getElementById("requests-per-sec").textContent = `${requestsPerSecond} req/s`
-                }
-
-                // Attack bar
-                const intensity = Math.min(100, requestsPerSecond * 12)
-                document.getElementById("attack-bar").style.width = `${intensity}%`
-
-                // Thống kê
-                document.getElementById("today-count").textContent = Math.floor(totalRequests * 0.65)
-                peak5min = Math.max(peak5min, requestsPerSecond * 300)
-                document.getElementById("peak-count").textContent = peak5min
-
-            } catch(e) {
-                console.log("CountAPI connected")
+                    <!-- Row 1 -->
+                    <div class="info-row flex justify-between items-center border-b border-gray-100 pb-4 px-2">
+                        <span class="text-gray-500 text-sm">Họ và tên</span>
+                        <span class="font-semibold text-gray-900">Nguyễn Văn A</span>
+                    </div>
+                    
+                    <!-- Row 2 -->
+                    <div class="info-row flex justify-between items-center border-b border-gray-100 pb-4 px-2">
+                        <span class="text-gray-500 text-sm">Ngày sinh</span>
+                        <span class="font-semibold text-gray-900">12/03/1995</span>
+                    </div>
+                    
+                    <!-- Row 3 -->
+                    <div class="info-row flex justify-between items-center border-b border-gray-100 pb-4 px-2">
+                        <span class="text-gray-500 text-sm">Giới tính</span>
+                        <span class="font-semibold text-gray-900">Nam</span>
+                    </div>
+                    
+                    <!-- Row 4 -->
+                    <div class="info-row flex justify-between items-center border-b border-gray-100 pb-4 px-2">
+                        <span class="text-gray-500 text-sm">Dân tộc</span>
+                        <span class="font-semibold text-gray-900">Kinh</span>
+                    </div>
+                    
+                    <!-- Row 5 -->
+                    <div class="info-row flex justify-between items-center border-b border-gray-100 pb-4 px-2">
+                        <span class="text-gray-500 text-sm">Quốc tịch</span>
+                        <span class="font-semibold text-gray-900">Việt Nam</span>
+                    </div>
+                    
+                    <!-- Row 6 -->
+                    <div class="info-row flex justify-between items-center border-b border-gray-100 pb-4 px-2">
+                        <span class="text-gray-500 text-sm">Số CCCD</span>
+                        <div class="flex items-center gap-2">
+                            <span class="font-semibold text-gray-900 tracking-widest">079123456789</span>
+                            <button onclick="copyCCCD()" 
+                                    class="text-[#d32f2f] text-xs font-medium px-2 py-0.5 rounded-lg hover:bg-red-50 transition-colors">
+                                📋
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 7 -->
+                    <div class="info-row flex justify-between items-center border-b border-gray-100 pb-4 px-2">
+                        <span class="text-gray-500 text-sm">Ngày cấp</span>
+                        <span class="font-semibold text-gray-900">15/06/2022</span>
+                    </div>
+                    
+                    <!-- Row 8 -->
+                    <div class="info-row flex justify-between items-center px-2">
+                        <span class="text-gray-500 text-sm">Nơi cấp</span>
+                        <span class="font-semibold text-gray-900">Cục Cảnh sát Quản lý Hành chính</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Address section -->
+            <div class="mx-5 mt-4 bg-white rounded-3xl shadow-xl border border-gray-100 p-6 card">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-[#d32f2f] text-xl">📍</span>
+                    <h3 class="font-semibold text-gray-800">Địa chỉ thường trú</h3>
+                </div>
+                <p class="text-gray-700 leading-relaxed">
+                    123 Đường Nguyễn Huệ, Phường Bến Nghé,<br>
+                    Quận 1, Thành phố Hồ Chí Minh
+                </p>
+                <div class="mt-4 text-xs flex items-center justify-between text-gray-400">
+                    <span>Quê quán: Xã Tân Phú, Huyện Tân Phú, Tỉnh Đồng Nai</span>
+                </div>
+            </div>
+            
+            <!-- QR Code & Extra info -->
+            <div class="mx-5 mt-4 flex gap-4">
+                <!-- QR -->
+                <div class="flex-1 bg-white rounded-3xl shadow-xl border border-gray-100 p-5 card flex flex-col items-center">
+                    <p class="text-xs text-gray-500 mb-2 text-center">Mã QR định danh</p>
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&amp;data=079123456789%20Nguyen%20Van%20A%20-%20CCCD%20Viet%20Nam" 
+                         alt="QR Code CCCD" 
+                         class="w-36 h-36 mx-auto">
+                    <p class="text-[10px] text-center text-gray-400 mt-3">Quét để xác thực</p>
+                </div>
+                
+                <!-- Extra info -->
+                <div class="flex-1 bg-white rounded-3xl shadow-xl border border-gray-100 p-5 card">
+                    <div class="space-y-6">
+                        <div>
+                            <p class="text-xs text-gray-500">Số điện thoại</p>
+                            <p class="font-semibold">0987 654 321</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">Tình trạng cư trú</p>
+                            <p class="inline-flex items-center gap-1 text-emerald-600">
+                                <span class="text-lg">●</span> Đang cư trú hợp pháp
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500">Cập nhật lần cuối</p>
+                            <p class="text-sm">10/04/2026</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fake action buttons -->
+            <div class="mx-5 mt-6 grid grid-cols-3 gap-3">
+                <button onclick="fakeAction('Xem hộ khẩu')" 
+                        class="bg-white border border-gray-200 hover:border-[#d32f2f] text-gray-700 py-4 rounded-3xl text-xs font-medium flex flex-col items-center gap-1 transition-colors">
+                    <span class="text-xl">📋</span>
+                    HỘ KHẨU
+                </button>
+                <button onclick="fakeAction('Cập nhật thông tin')" 
+                        class="bg-white border border-gray-200 hover:border-[#d32f2f] text-gray-700 py-4 rounded-3xl text-xs font-medium flex flex-col items-center gap-1 transition-colors">
+                    <span class="text-xl">✏️</span>
+                    CẬP NHẬT
+                </button>
+                <button onclick="fakeAction('Xuất PDF')" 
+                        class="bg-white border border-gray-200 hover:border-[#d32f2f] text-gray-700 py-4 rounded-3xl text-xs font-medium flex flex-col items-center gap-1 transition-colors">
+                    <span class="text-xl">📄</span>
+                    XUẤT PDF
+                </button>
+            </div>
+            
+            <!-- Footer -->
+            <div class="text-center mt-8 pb-6">
+                <div class="inline-flex items-center gap-2 bg-amber-50 text-amber-700 text-[10px] px-4 py-2 rounded-3xl">
+                    <span>⚠️</span>
+                    <span class="font-medium">DỮ LIỆU HOÀN TOÀN GIẢ LẬP - CHỈ DÙNG MINH HỌA</span>
+                </div>
+                <p class="text-[10px] text-gray-400 mt-4">File HTML demo • Tối ưu mobile 100%</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Tailwind initialization
+        function initializeTailwind() {
+            return {
+                config(userConfig = {}) {
+                    return {
+                        content: [],
+                        theme: {
+                            extend: {},
+                        },
+                        plugins: [],
+                        ...userConfig,
+                    }
+                },
+                theme: {
+                    extend: {},
+                },
             }
         }
-
-        // Tạo báo cáo email (copy vào clipboard)
-        function generateEmailReport() {
-            const report = `🚀 KURAMA DDoS Test Lab Report\n` +
-                           `Thời gian: ${new Date().toLocaleString('vi-VN')}\n` +
-                           `Tổng request: ${totalRequests}\n` +
-                           `Tốc độ hiện tại: ${requestsPerSecond} req/s\n` +
-                           `IP của bạn: ${yourIP}\n` +
-                           `==================================\n` +
-                           `Test trên Vercel - 1 file HTML duy nhất\n` +
-                           `Link: ${window.location.href}`
-
-            navigator.clipboard.writeText(report).then(() => {
-                const msg = document.createElement("div")
-                msg.style.cssText = "position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:#22ff88; color:#000; padding:16px 24px; border-radius:9999px; font-size:15px; box-shadow:0 0 30px #22ff88; white-space:pre-line; text-align:center;"
-                msg.innerHTML = "✅ ĐÃ COPY BÁO CÁO VÀO CLIPBOARD!<br><span class='text-xs'>Dán vào email của bạn và gửi</span>"
-                document.body.appendChild(msg)
-                setTimeout(() => msg.remove(), 3500)
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            return initializeTailwind().config
+        })
+        
+        // Copy CCCD number
+        function copyCCCD() {
+            const cccd = "079123456789"
+            navigator.clipboard.writeText(cccd).then(() => {
+                const originalText = event.target.innerHTML
+                event.target.innerHTML = "✅"
+                setTimeout(() => {
+                    event.target.innerHTML = originalText
+                }, 1500)
+                showToast("Đã sao chép số CCCD!")
             })
         }
-
-        // Khởi động
-        function start() {
-            getCurrentIP()
-            hitCounter()          // +1 ngay khi mở trang
-            getCounter()          // Lấy giá trị ban đầu
+        
+        // Fake button actions with nice animation
+        function fakeAction(action) {
+            const toast = document.createElement('div')
+            toast.style.cssText = `
+                position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+                background: #d32f2f; color: white; padding: 14px 24px; border-radius: 9999px;
+                box-shadow: 0 10px 15px -3px rgb(212 47 47);
+                font-size: 14px; font-weight: 600; z-index: 9999;
+                animation: slideUp 0.3s ease forwards;
+            `
+            toast.textContent = action + " thành công! (Giả lập)"
+            document.body.appendChild(toast)
             
-            // Poll realtime mỗi 1.8 giây
-            setInterval(getCounter, 1800)
-            
-            console.log('%c🌐 KURAMA DDoS Test Lab (Vercel) đang chạy - 1 file HTML duy nhất!', 'color:#22ff88; font-family:monospace')
+            setTimeout(() => {
+                toast.style.animation = 'slideDown 0.3s ease forwards'
+                setTimeout(() => toast.remove(), 300)
+            }, 2800)
         }
-
-        window.onload = start
+        
+        // Toast helper
+        function showToast(message) {
+            const toast = document.createElement('div')
+            toast.style.cssText = `
+                position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+                background: #10b981; color: white; padding: 14px 24px; border-radius: 9999px;
+                box-shadow: 0 10px 15px -3px rgb(16 185 129);
+                font-size: 14px; font-weight: 600; z-index: 9999;
+            `
+            toast.textContent = message
+            document.body.appendChild(toast)
+            
+            setTimeout(() => {
+                toast.remove()
+            }, 2200)
+        }
+        
+        console.log('%c✅ File HTML giả lập Thông tin Dân cư Việt Nam đã sẵn sàng!', 'color:#d32f2f; font-size:13px; font-weight:700')
     </script>
 </body>
-</html>
+                            </html>
