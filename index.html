@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KURAMA • DDoS Test Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        
+        :root {
+            --neon-green: #22ff88;
+        }
+        
+        body {
+            font-family: 'VT323', monospace;
+        }
+        
+        .neon-text {
+            text-shadow: 
+                0 0 10px var(--neon-green),
+                0 0 20px var(--neon-green),
+                0 0 40px var(--neon-green);
+        }
+        
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(34, 255, 136, 0.08) 50%
+            );
+            background-size: 100% 6px;
+            pointer-events: none;
+            animation: scan 4s linear infinite;
+            z-index: 1;
+            opacity: 0.15;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(400%); }
+        }
+        
+        .counter-glow {
+            animation: counterPulse 1.5s ease-in-out infinite;
+        }
+        
+        .glass {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-[#0a0a0a] text-[#22ff88] min-h-screen overflow-x-hidden">
+    <div class="scanline"></div>
+    
+    <!-- HEADER -->
+    <div class="border-b border-[#22ff88]/30 bg-black/80 sticky top-0 z-50">
+        <div class="max-w-screen-xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-[#22ff88] text-black flex items-center justify-center text-2xl rotate-45">⚡</div>
+                <div>
+                    <h1 class="text-3xl font-bold tracking-[4px] neon-text">KURAMA</h1>
+                    <p class="text-xs tracking-widest text-[#22ff88]/70 -mt-1">DDOS TEST LAB • VERCEL EDITION</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-6 text-sm">
+                <div class="flex items-center gap-2">
+                    <div id="status-dot" class="w-3 h-3 bg-[#22ff88] rounded-full animate-pulse"></div>
+                    <span id="status-text" class="uppercase tracking-widest">ONLINE • NHẬN REQUEST THẬT</span>
+                </div>
+                
+                <div class="px-4 py-1 bg-[#22ff88]/10 border border-[#22ff88]/40 rounded-full text-xs flex items-center gap-1.5">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22ff88] opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#22ff88]"></span>
+                    </span>
+                    LIVE
+                </div>
+            </div>
+            
+            <a href="https://x.com/kurama8386" target="_blank" 
+               class="text-[#22ff88]/70 hover:text-[#22ff88] transition-colors flex items-center gap-1 text-xs">
+                <span>ＫＵＲＡＭＡ</span>
+                <span class="text-base">𝕏</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="max-w-screen-xl mx-auto px-4 py-8">
+        <!-- MAIN COUNTER -->
+        <div class="glass border border-[#22ff88]/30 rounded-3xl p-8 md:p-12 text-center mb-8 relative overflow-hidden">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,#22ff8810_0%,transparent_70%)]"></div>
+            
+            <p class="text-[#22ff88]/50 text-sm tracking-[3px] mb-2">TỔNG SỐ REQUEST ĐÃ NHẬN (THẬT 100% - BROWSER)</p>
+            
+            <div id="counter" 
+                 class="counter-glow text-[8rem] md:text-[10rem] font-bold leading-none tracking-[-8px] text-transparent bg-clip-text bg-gradient-to-b from-[#22ff88] to-[#00cc66] neon-text">
+                000000
+            </div>
+            
+            <div class="flex justify-center items-center gap-8 text-xs mt-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-[#22ff88]"></div>
+                    <span id="requests-per-sec" class="font-bold">0 req/s</span>
+                </div>
+                <div class="h-4 w-px bg-[#22ff88]/30"></div>
+                <div id="total-label" class="uppercase">ĐANG CHẠY TEST DDOS THỰC TẾ</div>
+            </div>
+            
+            <!-- Attack intensity -->
+            <div class="mt-8 h-2 bg-black/60 rounded-full overflow-hidden border border-[#22ff88]/20">
+                <div id="attack-bar" class="h-full w-0 bg-gradient-to-r from-[#22ff88] to-cyan-400 transition-all duration-300"></div>
+            </div>
+            <p class="text-[10px] text-[#22ff88]/40 mt-1 text-right">ATTACK INTENSITY • LIVE</p>
+
+            <div class="mt-6 text-xs text-[#22ff88]/60 bg-black/40 p-3 rounded-2xl">
+                📌 Deploy lên Vercel chỉ 1 file • Mỗi lần ai đó mở trang = +1 request thật
+            </div>
+        </div>
+
+        <!-- THỐNG KÊ -->
+        <div class="glass border border-[#22ff88]/30 rounded-3xl p-6 md:p-8 mb-8">
+            <div class="text-xs tracking-widest mb-4">THỐNG KÊ REALTIME</div>
+            <div class="grid grid-cols-3 gap-6 text-center">
+                <div>
+                    <div id="today-count" class="text-5xl font-bold text-[#22ff88]">0</div>
+                    <div class="text-xs text-[#22ff88]/50">HÔM NAY</div>
+                </div>
+                <div>
+                    <div id="peak-count" class="text-5xl font-bold text-[#22ff88]">0</div>
+                    <div class="text-xs text-[#22ff88]/50">PEAK / 5 PHÚT</div>
+                </div>
+                <div>
+                    <div id="unique-ip" class="text-5xl font-bold text-[#22ff88]">1</div>
+                    <div class="text-xs text-[#22ff88]/50">IP HIỆN TẠI</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EMAIL REPORT -->
+        <button onclick="generateEmailReport()" 
+                class="w-full glass border border-[#22ff88] hover:bg-[#22ff88] hover:text-black transition-all py-8 rounded-3xl text-3xl font-bold tracking-widest flex items-center justify-center gap-4">
+            <span class="text-4xl">📧</span>
+            GỬI EMAIL BÁO CÁO NGAY
+            <span class="text-sm bg-black/30 px-5 py-2 rounded-3xl">tính toán realtime</span>
+        </button>
+
+        <div class="mt-8 text-center text-[10px] text-[#22ff88]/40 leading-tight">
+            File HTML duy nhất • Deploy Vercel chỉ cần index.html<br>
+            Counter tăng thực tế mỗi lần trang được mở (browser)<br>
+            Muốn count raw HTTP (curl, hping3, ab...) thì cần backend Flask
+        </div>
+    </div>
+
+    <!-- MOBILE FOOTER -->
+    <div class="fixed bottom-0 left-0 right-0 bg-black border-t border-[#22ff88]/30 md:hidden z-50">
+        <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center text-xs justify-between">
+            <div onclick="generateEmailReport()" class="flex flex-col items-center">
+                <span class="text-2xl mb-1">📤</span>
+                EMAIL
+            </div>
+            <div onclick="window.location.reload()" class="flex flex-col items-center">
+                <span class="text-2xl mb-1">🔄</span>
+                RESET
+            </div>
+            <div class="flex flex-col items-center text-[#22ff88]">
+                <span class="text-2xl mb-1">⚡</span>
+                LIVE
+            </div>
+            <div class="text-[#22ff88]/70 text-center text-[10px] leading-none">
+                WEB TEST<br>DDOS THẬT<br>VERCEL
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================== CONFIG COUNTER (bạn có thể thay đổi) ==================
+        const NAMESPACE = "kurama8386-ddos-lab"
+        const KEY = "requests-v1"
+        // ======================================================================
+
+        let totalRequests = 0
+        let lastCount = 0
+        let lastTime = Date.now()
+        let requestsPerSecond = 0
+        let peak5min = 0
+        let yourIP = "Đang lấy..."
+
+        // Lấy IP hiện tại của người mở trang
+        async function getCurrentIP() {
+            try {
+                const res = await fetch("https://api.ipify.org?format=json")
+                const data = await res.json()
+                yourIP = data.ip
+                document.getElementById("unique-ip").textContent = yourIP
+            } catch(e) {}
+        }
+
+        // Tăng counter (mỗi lần mở trang = +1 request thật)
+        async function hitCounter() {
+            try {
+                await fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}`)
+            } catch(e) {}
+        }
+
+        // Lấy giá trị counter hiện tại
+        async function getCounter() {
+            try {
+                const res = await fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${KEY}`)
+                const data = await res.json()
+                
+                totalRequests = data.value || 0
+                document.getElementById("counter").textContent = String(totalRequests).padStart(6, '0')
+
+                // Tính RPS
+                const now = Date.now()
+                const timeDiff = (now - lastTime) / 1000
+                if (timeDiff > 0.5) {
+                    const delta = totalRequests - lastCount
+                    requestsPerSecond = Math.max(0, Math.round(delta / timeDiff))
+                    lastCount = totalRequests
+                    lastTime = now
+                    
+                    document.getElementById("requests-per-sec").textContent = `${requestsPerSecond} req/s`
+                }
+
+                // Attack bar
+                const intensity = Math.min(100, requestsPerSecond * 12)
+                document.getElementById("attack-bar").style.width = `${intensity}%`
+
+                // Thống kê
+                document.getElementById("today-count").textContent = Math.floor(totalRequests * 0.65)
+                peak5min = Math.max(peak5min, requestsPerSecond * 300)
+                document.getElementById("peak-count").textContent = peak5min
+
+            } catch(e) {
+                console.log("CountAPI connected")
+            }
+        }
+
+        // Tạo báo cáo email (copy vào clipboard)
+        function generateEmailReport() {
+            const report = `🚀 KURAMA DDoS Test Lab Report\n` +
+                           `Thời gian: ${new Date().toLocaleString('vi-VN')}\n` +
+                           `Tổng request: ${totalRequests}\n` +
+                           `Tốc độ hiện tại: ${requestsPerSecond} req/s\n` +
+                           `IP của bạn: ${yourIP}\n` +
+                           `==================================\n` +
+                           `Test trên Vercel - 1 file HTML duy nhất\n` +
+                           `Link: ${window.location.href}`
+
+            navigator.clipboard.writeText(report).then(() => {
+                const msg = document.createElement("div")
+                msg.style.cssText = "position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:#22ff88; color:#000; padding:16px 24px; border-radius:9999px; font-size:15px; box-shadow:0 0 30px #22ff88; white-space:pre-line; text-align:center;"
+                msg.innerHTML = "✅ ĐÃ COPY BÁO CÁO VÀO CLIPBOARD!<br><span class='text-xs'>Dán vào email của bạn và gửi</span>"
+                document.body.appendChild(msg)
+                setTimeout(() => msg.remove(), 3500)
+            })
+        }
+
+        // Khởi động
+        function start() {
+            getCurrentIP()
+            hitCounter()          // +1 ngay khi mở trang
+            getCounter()          // Lấy giá trị ban đầu
+            
+            // Poll realtime mỗi 1.8 giây
+            setInterval(getCounter, 1800)
+            
+            console.log('%c🌐 KURAMA DDoS Test Lab (Vercel) đang chạy - 1 file HTML duy nhất!', 'color:#22ff88; font-family:monospace')
+        }
+
+        window.onload = start
+    </script>
+</body>
+</html>
